@@ -21,8 +21,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """is the empty line is entered
-        in response to the prompt
+        """Called when an empty line is entered in response to the prompt
         """
         pass
 

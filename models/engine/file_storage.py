@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 
-
-
 import json
 import models
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage():
 
     __file_path = "file.json"
     __objects = {}
+
 
     def all(self):
         return (self.__objects)
@@ -28,11 +28,15 @@ class FileStorage():
             json.dump(aux, f)
 
     def reload(self):
+        cl = {'User':User}
         try:
             with open(self.__file_path, 'r') as filesave:
-                # dic = json.load(f)
                 for key, value in json.load(filesave).items():
-                    aux = eval(value['__class__'])(**value)
-                    self.__objects[key] = aux
+                    if value['__class__'] in cl:
+                        aux = eval(value['__class__'])(**value)
+                        self.__objects[key] = aux
+
+
+
         except Exception:
             pass

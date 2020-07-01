@@ -6,13 +6,14 @@ import cmd
 import json
 from models.base_model import BaseModel
 from models import storage
-
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """command interpreter of AirBnB project
     """
-    classes = {"BaseModel"}
+    classes = {"BaseModel":BaseModel, 'User':User}
     prompt = '(hbnb) '
+    
 
     def do_EOF(self, line):
         """Ctrl D - the program will exit cleanly

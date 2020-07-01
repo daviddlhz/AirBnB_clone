@@ -4,16 +4,17 @@
 
 import cmd
 import json
+import shlex
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     """command interpreter of AirBnB project
     """
-    classes = {"BaseModel":BaseModel, 'User':User}
+    classes = {"BaseModel": BaseModel, 'User': User}
     prompt = '(hbnb) '
-
 
     def do_EOF(self, line):
         """Ctrl D - the program will exit cleanly
@@ -38,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 1:
             print("** class name missing **")
         elif len(args) >= 1:
-            if args[0] not in HBNBCommand.classes:
+            if args[0] not in self.classes:
                 print("** class doesn't exist **")
             else:
                 n_instance = eval(str(args[0]) + '()')
@@ -53,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print('** class name missing **')
             return
-        elif args[0] not in HBNBCommand.classes:
+        elif args[0] not in self.classes:
             print('** class doesn\'t exist **')
             return
         elif len(args) == 1:
@@ -77,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
             return
         elif len(args) == 1:
@@ -122,29 +123,26 @@ class HBNBCommand(cmd.Cmd):
         (save the change into the JSON file)
         """
         args = line.split(' ')
-        obj = storage.all()
+        objects = storage.all()
+
         if len(args) == 0:
             print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
         elif len(args) == 1:
-            if args[0] not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-            else:
-                print("** instance id missing **")
+            print("** instance id missing **")
         elif len(args) == 2:
-            k_find = args[0] + '.' + args[1]
-            if k_find not in obj:
-                print('** no instance found **')
-            else:
-                print("** attribute name missing **")
+            print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
-        elif len(args) >= 4:
-            objx = obj[args[0] + '.' + args[1]]
-            if args[2] in objx.__dict__:
-                objx.__dict__[args[2]] = eval(args[3])
-            else:
-                objx.__dict__[args[2]] = eval(args[3])
-        storage.save()
+        else:
+            key_find = args[0] + '.' + args[1]
+            obj = objects.get(key_find, None)
+            if not obj:
+                print("** no instance found **")
+                return
+            setattr(obj, args[2], args[3].lstrip('"').rstrip('"'))
+            storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

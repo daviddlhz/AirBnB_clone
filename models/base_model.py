@@ -29,6 +29,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self):
         """Return a readable string
@@ -40,6 +41,7 @@ class BaseModel:
         """The method updates the instance attribute updated_at.
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Dictionary representation of instance

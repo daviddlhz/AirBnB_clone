@@ -21,4 +21,8 @@ print(my_new_model)
 print(type(my_new_model.created_at))
 
 print("--")
+<<<<<<< HEAD
 print(my_model is my_new_model)
+=======
+print(my_model is my_new_model)
+>>>>>>> e405e69dbf15157162d7b44bb0564e49bab55193

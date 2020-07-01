@@ -11,12 +11,25 @@ class BaseModel:
     """Class BaseModel
     """
 
-    def __init__(self, id=None):
+    def __init__(self, *args, **kwargs):
         """Method constructor
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == 'created_at':
+                    self.created_at = datetime.strptime(value,
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                elif key == 'updated_at':
+                    self.updated_at = datetime.strptime(value,
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                else:
+                    if key != "__class__":
+                        setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            models.storage.new(self)
 
     def __str__(self):
         """Return a readable string
@@ -28,6 +41,7 @@ class BaseModel:
         """The method updates the instance attribute updated_at.
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Dictionary representation of instance

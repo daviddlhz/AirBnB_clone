@@ -28,7 +28,7 @@ class FileStorage():
             json.dump(aux, f)
 
     def reload(self):
-        cl = {'User':User}
+        cl = {'BaseModel':BaseModel, 'User':User}
         try:
             with open(self.__file_path, 'r') as filesave:
                 for key, value in json.load(filesave).items():

@@ -13,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     """
     classes = {"BaseModel":BaseModel, 'User':User}
     prompt = '(hbnb) '
-    
+
 
     def do_EOF(self, line):
         """Ctrl D - the program will exit cleanly
@@ -42,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
             else:
                 n_instance = eval(str(args[0]) + '()')
-                print(n_instance)
+                print(n_instance.id)
                 n_instance.save()
 
     def do_show(self, line):
@@ -99,21 +99,22 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name.
         """
         args = line.split(' ')
-        if len(args) == 0:
-            all_objs = storage.all()
-            new_list = []
-            for obj_id in all_objs.keys():
-                obj = all_objs[obj_id]
-                new_list.append("{}".format(obj))
+        instance = storage.all()
+        new_list = []
+        if len(line) == 0:
+            for value in instance.values():
+                new_list.append(value.__str__())
             print(new_list)
-        elif len(args) == 1:
-            if args[0] in HBNBCommand.classes:
-                for keys in storage.all().values():
-                    if args[0] in HBNBCommand.classes:
-                        new_list.append(str(keys))
-                print('{}'.format(new_list))
-            else:
-                print('** class doesn\'t exist **')
+            return
+        if args[0] not in self.classes:
+            print("** class doesn't exist **")
+            return
+        else:
+            for value in instance.values():
+                if args[0] == value.__class__.__name__:
+                    new_list.append(value.__str__())
+            print(new_list)
+            return
 
     def do_update(self, line):
         """ Updates an instance based on the class name

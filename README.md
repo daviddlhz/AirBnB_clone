@@ -8,7 +8,7 @@ The Command Interpreter is used to manage the whole application's functionality 
 ## Installation :key:
 Use the  [git clone](https://github.com/daviddlhz/AirBnB_clone.git) to install this repository
 ```
-git clone https://github.com/marcewp15/AirBnB_clone.git
+git clone https://github.com/daviddlhz/AirBnB_clone.git
 ```
 
 ## Usage :wrench:
